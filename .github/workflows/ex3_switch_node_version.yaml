@@ -3,7 +3,7 @@ on:
   pull_request:
 jobs:
   run-npm-test:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     env:
       NODE_VERSION: 20
     steps:
