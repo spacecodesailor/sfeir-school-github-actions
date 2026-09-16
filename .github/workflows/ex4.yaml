@@ -1,4 +1,4 @@
-name: reusable workflow
+name: my first reusable workflow
 on: 
   workflow_call:
     inputs:
@@ -7,3 +7,19 @@ on:
         default: 'lts/*'
         required: false
         type: string
+jobs:
+  run-npm-test:
+    runs-on: ubuntu-latest
+    steps:
+        - name: checkout
+          uses: actions/checkout@v6
+        - name : setup node
+          uses: actions/setup-node@v6
+          with:
+            node-version: ${{ inputs.node-version }}
+        - name: run test
+          shell: bash
+          run: |
+            echo "node -v"
+            echo "npm install"
+            echo "npm test"
