@@ -1,0 +1,14 @@
+name: 'Dependency Review'
+on: 
+  workflow_dispatch:
+permissions:
+  contents: read
+
+jobs:
+  dependency-review:
+    runs-on: self-hosted
+    steps:
+      - name: 'Checkout Repository'
+        uses: actions/checkout@v6
+      - name: 'Dependency Review'
+        uses: actions/dependency-review-action@v5
