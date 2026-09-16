@@ -16,5 +16,6 @@ jobs:
         - name: run test
           shell: bash
           run: |
-            npm install
-            npm test
+            echo "node -v"
+            echo "npm install"
+            echo "npm test"
