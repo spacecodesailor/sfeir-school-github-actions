@@ -8,14 +8,23 @@ jobs:
     steps:
         - name: checkout
           uses: actions/checkout@v6
-        - name : setup node
+
+        - name: setup node
           uses: actions/setup-node@v6
           with:
             node-version: 'lts/*'
+
+        # 1. Add cache step to the install job (to save the cache)
+        - uses: actions/cache@v6
+          id: cache
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
         - name: run install
-          shell: bash
-          run: |
-            npm install
+          # Only run install if there is NO cache hit
+          if: steps.cache.outputs.cache-hit != 'true'
+          run: npm ci
 
   run-npm-test:
     runs-on: ubuntu-latest
@@ -23,11 +32,18 @@ jobs:
     steps:
         - name: checkout
           uses: actions/checkout@v6
-        - name : setup node
+
+        - name: setup node
           uses: actions/setup-node@v6
           with:
             node-version: 'lts/*'
+
+        # 2. Add the exact same cache step to the test job (to restore it)
+        - uses: actions/cache@v6
+          id: cache
+          with:
+            path: node_modules
+            key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+
         - name: run test
-          shell: bash
-          run: |
-            npm test
+          run: npm test
